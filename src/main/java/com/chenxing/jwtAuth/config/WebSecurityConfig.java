@@ -14,6 +14,7 @@ import com.chenxing.jwtAuth.jwtbase.JWTLoginFilter;
 
 /**
  * 引入一个安全设置类WebSecurityConfig
+ * <p>
  * 
  * @liuxing
  * 
@@ -21,7 +22,9 @@ import com.chenxing.jwtAuth.jwtbase.JWTLoginFilter;
 @Configuration
 @EnableWebSecurity
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
-	// 设置 HTTP 验证规则
+	/**
+	 * 设置所有人都能访问/ 设置所有人都能POST方式访问/login
+	 */
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
 		// 关闭csrf验证
@@ -38,10 +41,10 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 				.antMatchers("/world").hasRole("ADMIN")
 				// 所有请求需要身份认证
 				.anyRequest().authenticated().and()
-				// 添加一个过滤器 所有访问 /login 的请求交给 JWTLoginFilter 来处理 这个类处理所有的JWT相关内容
+				// 认证过滤器：你是谁.... 添加一个过滤器 所有访问 /login 的请求交给 JWTLoginFilter 来处理 这个类处理所有的JWT相关内容
 				.addFilterBefore(new JWTLoginFilter("/login", authenticationManager()),
 						UsernamePasswordAuthenticationFilter.class)
-				// 添加一个过滤器验证其他请求的Token是否合法
+				// 权限过滤器：你能做什么.... 添加一个过滤器验证其他请求的Token是否合法
 				.addFilterBefore(new JWTAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
 	}
 
