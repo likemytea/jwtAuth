@@ -23,7 +23,7 @@ import com.chenxing.jwtAuth.jwtbase.JWTLoginFilter;
 @EnableWebSecurity
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 	/**
-	 * 设置所有人都能访问/ 设置所有人都能POST方式访问/login
+	 * 设置所有人都能访问/ 设置所有人都能POST方式访问/login 1
 	 */
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
