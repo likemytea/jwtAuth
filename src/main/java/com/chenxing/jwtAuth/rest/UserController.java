@@ -49,7 +49,7 @@ public class UserController {
 	public String world() throws JSONException {
 		ArrayList<String> users = new ArrayList<String>() {
 			{
-				add("world");
+				add("世界！");
 			}
 		};
 		return JSONResult.fillResultString(0, "", users);

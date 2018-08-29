@@ -28,6 +28,16 @@ public class CustomAuthenticationProvider implements AuthenticationProvider {
 			// 生成令牌
 			Authentication auth = new UsernamePasswordAuthenticationToken(name, password, authorities);
 			return auth;
+		}
+		if (name.equals("zhangsan") && password.equals("111111")) {
+
+			// 这里设置权限和角色
+			ArrayList<GrantedAuthority> authorities = new ArrayList<>();
+			authorities.add(new GrantedAuthorityImpl("ROLE_POP"));
+			authorities.add(new GrantedAuthorityImpl("AUTH_WRITE"));
+			// 生成令牌
+			Authentication auth = new UsernamePasswordAuthenticationToken(name, password, authorities);
+			return auth;
 		} else {
 			throw new BadCredentialsException("密码错误~");
 		}

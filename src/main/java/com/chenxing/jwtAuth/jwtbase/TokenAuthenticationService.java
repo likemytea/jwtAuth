@@ -14,6 +14,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.AuthorityUtils;
 
 import com.chenxing.jwtAuth.common.JSONResult;
+import com.chenxing.jwtAuth.domain.GrantedAuthorityImpl;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
@@ -26,14 +27,23 @@ public class TokenAuthenticationService {
 	static final String HEADER_STRING = "Authorization";// 存放Token的Header Key
 
 	// JWT生成方法
-	static void addAuthentication(HttpServletResponse response, String username) throws JSONException {
+	static void addAuthentication(HttpServletResponse response, Authentication auth) throws JSONException {
+		StringBuffer sb = new StringBuffer();
 
+		Object[] authArray = auth.getAuthorities().toArray();
+		for (int i = 0; i < authArray.length; i++) {
+			GrantedAuthorityImpl au = (GrantedAuthorityImpl) authArray[i];
+			sb.append(au.getAuthority());
+			if (i != authArray.length - 1) {
+				sb.append(",");
+			}
+		}
 		// 生成JWT
 		String JWT = Jwts.builder()
 				// 保存权限（角色）
-				.claim("authorities", "ROLE_ADMIN,AUTH_WRITE")
+				.claim("authorities", sb.toString())
 				// 用户名写入标题
-				.setSubject(username)
+				.setSubject(auth.getName())
 				// 有效期设置
 				.setExpiration(new Date(System.currentTimeMillis() + EXPIRATIONTIME))
 				// 签名设置
